@@ -206,9 +206,146 @@ body {
 
 /* 专门修改测试题目的字体大小 */
 #question-text {
-    /* 引用思源宋体，后面是备选字体 */
     font-family: 'Noto Serif SC', serif; 
-    font-size: 20px;   /* 你之前想改的字体大小 */
+    font-size: 20px;
     line-height: 1.6;
     color: #e0ddd5;
+}
+
+/* ==================== 手机适配 ==================== */
+
+/* 平板设备 (768px 及以下) */
+@media screen and (max-width: 768px) {
+    .main-title {
+        font-size: 2rem;
+    }
+    
+    .description {
+        font-size: 1rem;
+        margin-bottom: 36px;
+    }
+    
+    .start-btn {
+        padding: 14px 40px;
+        font-size: 16px;
+    }
+    
+    .circle-1 {
+        width: 200px;
+        height: 200px;
+    }
+    
+    .circle-2 {
+        width: 300px;
+        height: 300px;
+    }
+    
+    .circle-3 {
+        width: 150px;
+        height: 150px;
+    }
+    
+    #question-text {
+        font-size: 18px;
+    }
+    
+    .option-btn {
+        padding: 14px 16px;
+        font-size: 15px;
+    }
+}
+
+/* 手机设备 (480px 及以下) */
+@media screen and (max-width: 480px) {
+    .main-container {
+        padding: 0 16px;
+    }
+    
+    .main-title {
+        font-size: 1.6rem;
+    }
+    
+    .subtitle {
+        font-size: 10px;
+        letter-spacing: 0.2em;
+        margin-bottom: 16px;
+    }
+    
+    .description {
+        font-size: 0.9rem;
+        line-height: 1.7;
+        margin-bottom: 28px;
+    }
+    
+    .start-btn {
+        padding: 12px 32px;
+        font-size: 15px;
+    }
+    
+    .footer-info {
+        font-size: 11px;
+    }
+    
+    .circle {
+        filter: blur(60px);
+    }
+    
+    .circle-1 {
+        width: 150px;
+        height: 150px;
+    }
+    
+    .circle-2 {
+        width: 200px;
+        height: 200px;
+    }
+    
+    .circle-3 {
+        width: 100px;
+        height: 100px;
+    }
+    
+    #quiz-container {
+        padding: 0 8px;
+    }
+    
+    #question-text {
+        font-size: 16px;
+        margin-bottom: 28px;
+    }
+    
+    .option-btn {
+        padding: 12px 14px;
+        font-size: 14px;
+        margin-bottom: 10px;
+    }
+    
+    .progress-bar {
+        height: 3px;
+    }
+}
+
+/* 小屏手机 (360px 及以下) */
+@media screen and (max-width: 360px) {
+    .main-title {
+        font-size: 1.4rem;
+    }
+    
+    .description {
+        font-size: 0.85rem;
+    }
+    
+    .start-btn {
+        padding: 10px 28px;
+        font-size: 14px;
+    }
+    
+    #question-text {
+        font-size: 15px;
+    }
+    
+    .option-btn {
+        padding: 10px 12px;
+        font-size: 13px;
+    }
 }
