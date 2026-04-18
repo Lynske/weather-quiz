@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>天气测验 - 答题</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="progress-bar">
+        <div id="progress-fill"></div>
+    </div>
+
+    <div class="main-container">
+        <div class="quiz-header">
+             <span id="dimension-label"></span> · <span id="current-step">1</span> / 20
+        </div>
+
+        <div class="content">
+            <h2 id="question-text">加载中...</h2>
+            <div id="options-container"></div>
+        </div>
+    </div>
+
+    <script src="js/quiz-logic.js"></script>
+</body>
+</html>

@@ -1,0 +1,242 @@
+[
+  {
+    "id": "Topic-Temperature-1",
+    "dimension": "TEMP",
+    "type": "positive",
+    "text": "当你走进一个完全陌生的聚会现场，你脑海中闪过的第一个念头是？",
+    "options": [
+      { "label": "A", "text": "也许能遇到一个能聊得来的新朋友", "score": 2 },
+      { "label": "B", "text": "这里的氛围看起来比想象中更有趣", "score": 1 },
+      { "label": "C", "text": "找个角落先坐下看看情况", "score": 0 },
+      { "label": "D", "text": "这里的喧嚣让我觉得有点累，想早点回家", "score": -1 }
+    ]
+  },
+  {
+    "id": "Topic-Temperature-2",
+    "dimension": "TEMP",
+    "type": "positive",
+    "text": "如果有一个改变命运的机会摆在你面前，但伴随着未知的风险，你会？",
+    "options": [
+      { "label": "A", "text": "既然机会难得，为什么不试试看呢", "score": 2 },
+      { "label": "B", "text": "想象成功后的样子，那会让我充满动力", "score": 1 },
+      { "label": "C", "text": "拿出一张纸，客观写下收益和损失", "score": 0 },
+      { "label": "D", "text": "潜意识里觉得最后的结果多半不尽如人意", "score": -1 }
+    ]
+  },
+  {
+    "id": "Topic-Temperature-3",
+    "dimension": "TEMP",
+    "type": "negative",
+    "text": "关于“未来”这个词，你的第一反应通常是？",
+    "options": [
+      { "label": "A", "text": "一团看不清方向且让人不安的浓雾", "score": -2 },
+      { "label": "B", "text": "一个需要不断填写的复杂表格", "score": -1 },
+      { "label": "C", "text": "一个中性的时间刻度", "score": 0 },
+      { "label": "D", "text": "一个充满光亮的出口", "score": 1 }
+    ]
+  },
+  {
+    "id": "Topic-Temperature-4",
+    "dimension": "TEMP",
+    "type": "negative",
+    "text": "在处理一件棘手的麻烦事时，你更倾向于认为？",
+    "options": [
+      { "label": "A", "text": "坏运气总是在这种关键时刻缠上我", "score": -2 },
+      { "label": "B", "text": "事情大概率会往更糟的方向发展", "score": -1 },
+      { "label": "C", "text": "只能走一步看一步", "score": 0 },
+      { "label": "D", "text": "只要努力，总能找到解决的生机", "score": 1 }
+    ]
+  },
+  {
+    "id": "Topic-Humidity-1",
+    "dimension": "HUM",
+    "type": "positive",
+    "text": "看一部悲剧电影时，如果你流泪了，通常是因为？",
+    "options": [
+      { "label": "A", "text": "我完全代入了主角的那种心碎感", "score": 2 },
+      { "label": "B", "text": "电影里的某个细节勾起了我一段相似的回忆", "score": 1 },
+      { "label": "C", "text": "我只是单纯觉得导演的运镜和配乐很动人", "score": 0 },
+      { "label": "D", "text": "我很少在看电影时流泪，我会分析剧情的逻辑", "score": -1 }
+    ]
+  },
+  {
+    "id": "Topic-Humidity-2",
+    "dimension": "HUM",
+    "type": "positive",
+    "text": "评价一件艺术品（如画作或音乐）时，你更在意？",
+    "options": [
+      { "label": "A", "text": "它传递给我的那种不可言说的氛围感", "score": 2 },
+      { "label": "B", "text": "创作者在其中倾注的情感能量", "score": 1 },
+      { "label": "C", "text": "作品背后的历史背景或创作技巧", "score": 0 },
+      { "label": "D", "text": "它的构图、色彩比例或结构是否严谨", "score": -1 }
+    ]
+  },
+  {
+    "id": "Topic-Humidity-3",
+    "dimension": "HUM",
+    "type": "negative",
+    "text": "当你迷路时，你的第一反应通常是？",
+    "options": [
+      { "label": "A", "text": "立即打开地图，严格执行最精准的路线", "score": -2 },
+      { "label": "B", "text": "站在原地思考一下刚才从哪儿拐弯的", "score": -1 },
+      { "label": "C", "text": "随便找个路人问问", "score": 0 },
+      { "label": "D", "text": "跟着感觉走，享受这段意外的旅程", "score": 1 }
+    ]
+  },
+  {
+    "id": "Topic-Humidity-4",
+    "dimension": "HUM",
+    "type": "negative",
+    "text": "在决定是否购买一件非生活必需品时，你通常？",
+    "options": [
+      { "label": "A", "text": "严格对比参数和性价比，多一分钱都不想浪费", "score": -2 },
+      { "label": "B", "text": "思考它的实用价值是否大于它的价格", "score": -1 },
+      { "label": "C", "text": "看心情，但不常冲动消费", "score": 0 },
+      { "label": "D", "text": "只要一眼看上去让我心动，我就想拥有它", "score": 1 }
+    ]
+  },
+  {
+    "id": "Topic-Visibility-1",
+    "dimension": "VIS",
+    "type": "positive",
+    "text": "你有一个非常珍贵的秘密，你通常会？",
+    "options": [
+      { "label": "A", "text": "只要氛围合适，我不介意把它当作故事讲出来", "score": 2 },
+      { "label": "B", "text": "忍不住想和最信任的人分享", "score": 1 },
+      { "label": "C", "text": "写在私密的日记本里", "score": 0 },
+      { "label": "D", "text": "把它锁进内心的最深处，谁也无法触碰", "score": -1 }
+    ]
+  },
+  {
+    "id": "Topic-Visibility-2",
+    "dimension": "VIS",
+    "type": "positive",
+    "text": "如果有人误解了你，你会？",
+    "options": [
+      { "label": "A", "text": "一定要当面说清楚，哪怕会爆发争吵", "score": 2 },
+      { "label": "B", "text": "尝试坦诚沟通，把内心的想法摊开来讲", "score": 1 },
+      { "label": "C", "text": "解释一次，如果不听就算了", "score": 0 },
+      { "label": "D", "text": "保持沉默，觉得懂的人自然懂", "score": -1 }
+    ]
+  },
+  {
+    "id": "Topic-Visibility-3",
+    "dimension": "VIS",
+    "type": "negative",
+    "text": "关于“家”的装潢，你潜意识里最无法忍受哪种风格？",
+    "options": [
+      { "label": "A", "text": "落地大玻璃窗，总觉得外面有人在看我", "score": -2 },
+      { "label": "B", "text": "过于空旷、一眼就能看到底的布局", "score": -1 },
+      { "label": "C", "text": "采光过强的空间", "score": 0 },
+      { "label": "D", "text": "厚重且严密的双层遮光帘", "score": 1 }
+    ]
+  },
+  {
+    "id": "Topic-Visibility-4",
+    "dimension": "VIS",
+    "type": "negative",
+    "text": "在群体讨论中，如果你发现自己的想法和大家完全不同，你会？",
+    "options": [
+      { "label": "A", "text": "绝对保持沉默，不想成为被关注的焦点", "score": -2 },
+      { "label": "B", "text": "顺着大家的话说，隐藏自己的异议", "score": -1 },
+      { "label": "C", "text": "听大家的，不做无谓的争辩", "score": 0 },
+      { "label": "D", "text": "哪怕被孤立，也要清晰地表达自己的立场", "score": 1 }
+    ]
+  },
+  {
+    "id": "Topic-WindSpeed-1",
+    "dimension": "WIND",
+    "type": "positive",
+    "text": "如果生活是一潭水，你希望它现在的状态是？",
+    "options": [
+      { "label": "A", "text": "像海浪一样波涛汹涌，充满挑战", "score": 2 },
+      { "label": "B", "text": "像溪流一样不断流动，流向远方", "score": 1 },
+      { "label": "C", "text": "像公园里的池塘，偶尔有点涟漪", "score": 0 },
+      { "label": "D", "text": "像古井一样，波澜不惊", "score": -1 }
+    ]
+  },
+  {
+    "id": "Topic-WindSpeed-2",
+    "dimension": "WIND",
+    "type": "positive",
+    "text": "你多久会产生一次“想去另一个城市重新开始”的念头？",
+    "options": [
+      { "label": "A", "text": "经常，甚至已经脑补好了离开的路线", "score": 2 },
+      { "label": "B", "text": "当生活陷入瓶颈时，这个念头会变得很强烈", "score": 1 },
+      { "label": "C", "text": "旅游的时候偶尔会想一下", "score": 0 },
+      { "label": "D", "text": "从未有过，我更喜欢待在熟悉的地方", "score": -1 }
+    ]
+  },
+  {
+    "id": "Topic-WindSpeed-3",
+    "dimension": "WIND",
+    "type": "negative",
+    "text": "对于“规律且稳定”的工作/生活状态，你的真实心态是？",
+    "options": [
+      { "label": "A", "text": "这就是我梦寐以求的安全感，千万不要打破它", "score": -2 },
+      { "label": "B", "text": "挺好的，省去了很多不必要的麻烦", "score": -1 },
+      { "label": "C", "text": "尚可接受", "score": 0 },
+      { "label": "D", "text": "感到窒息，我觉得自己正在一点点枯萎", "score": 1 }
+    ]
+  },
+  {
+    "id": "Topic-WindSpeed-4",
+    "dimension": "WIND",
+    "type": "negative",
+    "text": "面对生活中突然出现的变动或意外，你的第一反应是？",
+    "options": [
+      { "label": "A", "text": "焦虑和排斥，希望能立刻回到原轨", "score": -2 },
+      { "label": "B", "text": "有点不知所措，只能被动接受", "score": -1 },
+      { "label": "C", "text": "尝试适应", "score": 0 },
+      { "label": "D", "text": "兴奋，觉得生活终于不再是一潭死水了", "score": 1 }
+    ]
+  },
+  {
+    "id": "Topic-Ionization-1",
+    "dimension": "ION",
+    "type": "positive",
+    "text": "当你达成一个阶段性的小目标后，你的第一心态是？",
+    "options": [
+      { "label": "A", "text": "下一个更高的目标在哪里？", "score": 2 },
+      { "label": "B", "text": "这只是个开始，我想要得到的远不止于此", "score": 1 },
+      { "label": "C", "text": "犒劳一下自己，休息一段时间", "score": 0 },
+      { "label": "D", "text": "已经很满足了，能做到这样已经很棒了", "score": -1 }
+    ]
+  },
+  {
+    "id": "Topic-Ionization-2",
+    "dimension": "ION",
+    "type": "positive",
+    "text": "如果现在给你一个机会去征服某个领域，你会觉得？",
+    "options": [
+      { "label": "A", "text": "热血沸腾，那才是我该待的地方", "score": 2 },
+      { "label": "B", "text": "这激起了我强烈的胜负欲", "score": 1 },
+      { "label": "C", "text": "考虑一下需要付出的代价再做决定", "score": 0 },
+      { "label": "D", "text": "压力太大了，我更喜欢现在轻松的生活", "score": -1 }
+    ]
+  },
+  {
+    "id": "Topic-Ionization-3",
+    "dimension": "ION",
+    "type": "negative",
+    "text": "关于“权力”和“掌控感”，你的看法是？",
+    "options": [
+      { "label": "A", "text": "太累了，我完全不想对任何人和事负责", "score": -2 },
+      { "label": "B", "text": "繁华如过眼云烟，不如内心的平静重要", "score": -1 },
+      { "label": "C", "text": "随缘，不强求也不排斥", "score": 0 },
+      { "label": "D", "text": "它们能带给我极致的安全感和自由空间", "score": 1 }
+    ]
+  },
+  {
+    "id": "Topic-Ionization-4",
+    "dimension": "ION",
+    "type": "negative",
+    "text": "在团队中，如果让你担任辅助而非主角，你会？",
+    "options": [
+      { "label": "A", "text": "感到非常轻松，我讨厌被推到最前面", "score": -2 },
+      { "label": "B", "text": "乐于接受，只要团队能赢就好", "score": -1 },
+      { "label": "C", "text": "听从安排", "score": 0 },
+      { "label": "D", "text": "感到憋屈，我不甘心只做一颗螺丝钉", "score": 1 }
+    ]
+  }
+]

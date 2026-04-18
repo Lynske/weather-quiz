@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<!-- 文档类型声明：HTML5标准 -->
+<html lang="zh">
+<!-- 页面语言：中文 -->
+<head>
+    <!-- 头部：页面配置、资源引入，不显示在页面主体 -->
+    <meta charset="UTF-8">
+    <!-- 字符编码：UTF-8 支持所有语言文字 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- 视口设置：适配移动端，宽度=设备宽度，初始缩放1.0 -->
+    <title>气象人格 - 测试结果</title>
+    <!-- 页面标题：浏览器标签显示内容 -->
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- 引入Tailwind CSS：快速实现样式布局 -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&display=swap" rel="stylesheet">
+    <!-- 引入谷歌字体：Noto Serif SC 中文字体 -->
+
+    <style>
+        /* 自定义CSS样式：补充Tailwind无法实现的效果 */
+        body { 
+            background-color: #0a0a0f; /* 页面背景：深黑蓝色 */
+            color: #e0ddd5; /* 文字颜色：浅灰白色 */
+            font-family: 'Noto Serif SC', serif; /* 字体：使用引入的中文字体 */
+        }
+        @keyframes breathe {
+            /* 呼吸动画关键帧：渐变透明+缩放，营造光晕呼吸效果 */
+            0%, 100% { opacity: 0.2; transform: scale(1); } /* 起点/终点：最小透明度+原始大小 */
+            50% { opacity: 0.4; transform: scale(1.1); } /* 中间：最大透明度+轻微放大 */
+        }
+        .animate-breathe { animation: breathe 4s infinite ease-in-out; }
+        /* 呼吸动画类：4秒循环，平滑播放 */
+        .radar-label { font-size: 12px; fill: #999; font-weight: bold; }
+        /* 雷达图标签样式 */
+        .radar-score { font-size: 10px; fill: #6aacef; }
+        /* 雷达图分数样式 */
+    </style>
+</head>
+
+<body>
+    <!-- 页面主体：用户可见内容 -->
+    <div class="min-h-screen relative overflow-hidden pb-12">
+        <!-- 最外层容器：最小高度=屏幕高度，相对定位，隐藏溢出，底部内边距 -->
+
+        <div class="absolute inset-0 pointer-events-none">
+            <!-- 背景光晕层：绝对定位铺满屏幕，不拦截鼠标点击 -->
+            <div class="absolute top-[10%] right-[5%] w-72 h-72 rounded-full bg-blue-900 opacity-20 animate-breathe blur-3xl"></div>
+            <!-- 蓝色光晕：右上角位置，圆形，呼吸动画，模糊效果 -->
+            <div class="absolute bottom-[10%] left-[10%] w-96 h-96 rounded-full bg-orange-900 opacity-10 animate-breathe blur-3xl"></div>
+            <!-- 橙色光晕：左下角位置，圆形，呼吸动画，模糊效果 -->
+        </div>
+
+        <div class="relative z-10 max-w-2xl mx-auto px-6 py-12">
+            <!-- 内容容器：层级在光晕之上，居中，最大宽度，内边距 -->
+
+            <div class="text-center mb-10">
+                <!-- 标题区域：居中对齐，底部外边距 -->
+                <p class="text-xs text-gray-400 tracking-[0.3em] uppercase mb-4">你的天气人格是</p>
+                <!-- 小标题：小字，灰色，字间距大，大写 -->
+                <h1 id="result-title" class="text-4xl font-bold mb-4 tracking-tight text-[#e0ddd5]">「加载中...」</h1>
+                <!-- 主标题：JS会替换成人格名称 -->
+                <p id="result-quote" class="text-gray-400 text-base leading-relaxed max-w-md mx-auto italic"></p>
+                <!-- 人格描述语：JS会自动填充 -->
+            </div>
+
+            <div id="tags-container" class="flex flex-wrap justify-center gap-2 mb-10"></div>
+            <!-- 标签容器：JS自动生成5个人格特质标签 -->
+
+            <div class="flex justify-center mb-12">
+                <!-- 雷达图外层：居中 -->
+                <div id="radar-container" class="relative"></div>
+                <!-- 雷达图容器：JS绘制雷达图 -->
+            </div>
+
+            <div class="text-center mb-10">
+                <!-- 气象编码区域：居中 -->
+                <p class="text-xs text-gray-500 mb-3 tracking-widest">气象编码</p>
+                <!-- 区域标题 -->
+                <div id="code-bars" class="flex justify-center gap-1.5"></div>
+                <!-- 编码数字条：JS生成 -->
+                <div id="code-labels" class="flex justify-center gap-1.5 mt-2"></div>
+                <!-- 编码标签：JS生成 -->
+            </div>
+
+            <div class="space-y-6 mb-12">
+                <!-- 深度解析区域 -->
+                <h2 class="text-xl font-bold text-center text-[#e0ddd5] mb-8 tracking-widest">深度解析</h2>
+                <!-- 解析标题 -->
+                <div id="analysis-container" class="space-y-6"></div>
+                <!-- 解析内容：JS自动生成5段文字 -->
+            </div>
+
+            <div class="text-center">
+                <!-- 返回按钮区域 -->
+                <button onclick="window.location.href='index.html'" class="px-10 py-3 rounded-full border border-gray-800 text-gray-500 hover:bg-gray-900 transition-all tracking-widest text-sm">
+                    返回首页
+                </button>
+                <!-- 返回按钮：点击跳转到首页 -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ==================== 1. 全局配置 ====================
+        // 五个人格维度配置：名称、图标、高分/低分描述
+        const dimensionLabels = {
+            TEMP: { name: "温度", icon: "🌡️", high: "乐观/奔放", low: "悲观/克制" },
+            HUM: { name: "湿度", icon: "💧", high: "感性/共情", low: "理性/逻辑" },
+            VIS: { name: "能见度", icon: "👁️", high: "封闭/压抑", low: "袒露/真实" },
+            WIND: { name: "风速", icon: "🌬️", high: "平静/安稳", low: "激荡/不满" },
+            ION: { name: "电离度", icon: "⚡", high: "知足/稳定", low: "野心/渴望" }
+        };
+
+        // 32种气象人格结果：编码 → 标题 + 描述语
+        const weatherResults = {
+            "00000": { title: "深秋的静止微冷", quote: "你是深秋静止的微冷，在清醒的寒意中与世界保持距离的观察者。" },
+            "00001": { title: "凌晨四点的极寒极夜", quote: "你是凌晨四点的极寒极夜，在寂静的黑暗中独守严苛秩序的孤行者。" },
+            "00010": { title: "寒流过境时的低压", quote: "你是寒流过境时的低压，在荒芜的风声中依然维持内心冷寂的倔强者。" },
+            "00011": { title: "冻雨降临前的紧绷", quote: "你是冻雨降临前的紧绷，在冰冷的动荡中伺机重塑规则的狩猎者。" },
+            "00100": { title: "冬日清晨的干爽晴空", quote: "你是冬日清晨的干爽晴空，坦诚地展示着内心寒冷与克制。" },
+            "00101": { title: "极地极光下的无声守望", quote: "你是极地极光下的无声守望，仰望至高之处且拥有绝对理性的追随者。" },
+            "00110": { title: "早雷过后干裂的沉寂", quote: "你是早雷过后干裂的沉寂，渴望表达却在现实摩擦中感到干瘪的思考者。" },
+            "00111": { title: "强风席卷的荒原旷野", quote: "你是强风席卷的荒原旷野，毫无遮蔽地迎向风暴并志在征服的勇士。" },
+            "01000": { title: "阴天里潮湿的雾气", quote: "你是阴天里潮湿的雾气，沉溺在感性潮汐里安静自我包裹的梦游者。" },
+            "01001": { title: "浓雾中微弱的引力", quote: "你是浓雾中微弱的引力，在迷茫的底色中执着寻找情感出口的守望者。" },
+            "01010": { title: "连绵雨夜的零星水花", quote: "你是连绵雨夜的零星水花，情绪在内部搅动却习惯无声消化的伤感者。" },
+            "01011": { title: "暴雨前夕的极端压抑", quote: "你是暴雨前夕的极端压抑，在阴影中积蓄着巨大情感势能的爆发者。" },
+            "01100": { title: "雨后黄昏的湿润余晖", quote: "你是雨后黄昏的湿润余晖，将内心的悲伤与温柔一同摊开的疗愈者。" },
+            "01101": { title: "晚霞消散前的最后绚烂", quote: "你是晚霞消散前的最后绚烂，即使注定坠入黑夜也要彻底燃烧的诗人。" },
+            "01110": { title: "骤雨中凌乱的空气", quote: "你是骤雨中凌乱的空气，在混乱的情绪中随风起伏并坦白不安的诚实者。" },
+            "01111": { title: "飓风天里的破碎与重组", quote: "你是飓风天里的破碎与重组，在极致动荡中野蛮生长出新自我的冒险家。" },
+            "10000": { title: "晴天午后的静谧暖阳", quote: "你是晴天午后的静谧暖阳，拥有稳定内心世界且自给自足的知足者。" },
+            "10001": { title: "暖阳里的能量积聚", quote: "你是暖阳里的能量积聚，在平和外表下有条不紊铺设蓝图的构建者。" },
+            "10010": { title: "穿堂而过的干爽微风", quote: "你是穿堂而过的干爽微风，敏锐察觉变化却始终保持理智独立的清醒者。" },
+            "10011": { title: "烈日下的空气振动", quote: "你是烈日下的空气振动，能理智利用每一份动荡化为前进动力的实干家。" },
+            "10100": { title: "碧空万里的绝对纯净", quote: "你是碧空万里的绝对纯净，简单透明且对世界毫无防备的赤诚者。" },
+            "10101": { title: "极昼天里的永恒日照", quote: "你是极昼天里的永恒日照，永远追求更高维度成就且相信理性的信徒。" },
+            "10110": { title: "强光照射下的无边波动", quote: "你是强光照射下的无边波动，热情而理智地与外界共振的社交家。" },
+            "10111": { title: "干燥大风里的巨大能量", quote: "你是干燥大风里的巨大能量，坦荡展示力量并在动态中构建王国的强者。" },
+            "11000": { title: "桑拿天里的微弱凉意", quote: "你是桑拿天里的微弱凉意，内心充盈着感性愉悦且安于现状的温柔者。" },
+            "11001": { title: "闷热午夜的荧光闪烁", quote: "你是闷热午夜的荧光闪烁，在温润感性中怀揣不灭梦想火种的守夜人。" },
+            "11010": { title: "阵雨过后的清新潮湿", quote: "你是阵雨过后的清新潮湿，情绪来去匆匆却始终热爱生活的共情者。" },
+            "11011": { title: "电闪雷鸣前的午后森林", quote: "你是电闪雷鸣前的午后森林，用生机勃勃的感性预示宏大愿景的引路人。" },
+            "11100": { title: "太阳雨下的柔和色彩", quote: "你是太阳雨下的柔和色彩，感性明亮并相信世界所有不期而遇的浪漫者。" },
+            "11101": { title: "霞光万道的升腾热气", quote: "你是霞光万道的升腾热气，渴望将感性的美好扩散至全身的攀登者。" },
+            "11110": { title: "暖风里翻涌的层层浪花", quote: "你是暖风里翻涌的层层浪花，拥有极具感染力的情绪并温暖他人的发光体。" },
+            "11111": { title: "盛夏晴空下的金色闪电", quote: "你是盛夏晴空下的金色闪电，处于极致热情与渴望张力中的领袖。" }
+        };
+
+        // 五维度深度解析文案：每个分数段对应一段文字
+        const dimensionComponents = {
+            "TEMP": {
+                "score_-6_-5": "你对世界的预期带有一种绝对的审慎与克制。你习惯在黑暗中预留最坏的打算，这种清醒的悲观主义是你保护灵魂免受伤害的终极盔甲，让你在面对外界的剧烈波动时，依然能维持一种波澜不惊的心理防御姿态。",
+                "score_-4_-3": "你习惯于在进入任何环境前先筑起一道心理防线。你通过预设落差来维持内心的稳态，表现出一种克制且疏离的生存姿态。这种对希望的吝啬，本质上是为了在失望来临时，能够比其他人更快地恢复平静。",
+                "score_-2_-1": "你是个清醒的观察者，不轻易交出内心的信任。你更倾向于在行动前先分析潜在的风险，这种淡淡的防御感让你在社交中显得既冷静又富有逻辑，虽然少了一点热烈，但多了一份掌控现实的稳健。",
+                "score_0": "你处于一种微妙的能量平衡点，既不盲目乐观也不刻意消极。你倾向于根据当下的事实来调整自己的心态，这种中性的能量底色让你像一面镜子，能够客观地映射出环境本身的色彩，不带过多的个人预设。",
+                "score_1_2": "你天生拥有发现微光的眼睛，倾向于相信事情总会有转机。这种温和的积极性让你在面对琐碎生活时，依然能维持一种轻盈且富有弹性的节奏。你相信善意与希望的力量，并愿意以此为基准去构建自己的生活。",
+                "score_3_4": "你的生命能量具有极强的向外辐射性，总能在复杂的局面中捕捉到向上的信号。你相信可能性，并愿意用这种原始的生命力去消融周遭的坚冰。你这种对未来的笃定感，往往能给身边的人带来意想不到的鼓舞。",
+                "score_5_6": "你是一个纯粹且炽热的能量辐射体。你对生命有着近乎野性的信心与热爱，这种极致的乐观足以消融任何现实的残酷。在你的世界里，没有无法逾越的鸿沟，这种燃烧的生命意志让你成为了无可争议的引力中心。"
+            },
+            "HUM": {
+                "score_-6_-5": "你像是一台高精密运转的逻辑引擎，在你的世界里，多余的情感通常被视为干扰项。你只相信客观事实、数据与因果律，这种干燥到极致的纯粹让你拥有惊人的决策效率，但也让你在感性面前显得格外冷峻。",
+                "score_-4_-3": "情感的潮汐很难打乱你的步调，你更倾向于用理智去拆解那些复杂的情绪纠葛。这种理性的疏离感让你在混乱的局面中总能迅速找到逻辑的红线，你习惯于将感性关进笼子，用冰冷的审视来维持秩序。",
+                "score_-2_-1": "你平衡着理智与感性，但天平通常向逻辑一侧倾斜。你通过思考来过滤那些可能让你失控的情绪，确保自己在任何时候都能保持得体的姿态。对你而言，清醒的认知远比瞬时的自我感动更具长久的价值。",
+                "score_0": "你的理性与感性维持着动态的等比分配。你既能深刻地感知他人的痛苦与快乐，又能迅速跳出情绪陷阱进行客观分析。这种平衡让你在感性的人群中显得理智，在理性的人群中又显得不失温度。",
+                "score_1_2": "你的内心世界充满了柔软的触角，容易被细微的情绪波动所浸润。你通过体悟而非逻辑来理解这个世界，这种润泽的特质让你拥有极佳的共情力，能够轻易捕捉到空气中那些不可言说的情感流向。",
+                "score_3_4": "你拥有极其敏感的情绪感受器，像海绵一样吸收着周遭的气息。你通过情感的共振来与他人建立深层的连接，这种湿润的灵魂底色让你在面对艺术、自然与爱时，有着比常人更为剧烈且深刻的生理性共鸣。",
+                "score_5_6": "你是一片深邃且汹涌的情感海洋。你的直觉远比理智更敏锐，灵魂始终处于一种高度敏感的张力之中。这种极致的感性让你能够触碰到世界最细微的脉搏，但也意味着你必须学会与那些排山倒海的情绪共生。"
+            },
+            "VIS": {
+                "score_-6_-5": "你将自我隐藏在绝对的暗处，内心世界有着极高的安全阈值与准入门槛。你几乎从不向外界展示自己的真实底牌，这种深度包裹的姿态是你对抗世界最核心的手段，让你拥有了一片绝对私密且神圣的精神领地。",
+                "score_-4_-3": "你的内心世界有一座高耸的围城，只在绝对安全或私密的时刻，才会向特定的人露出一丝微光。这种自我包裹是你核心的安全感来源，你习惯于在阴影中审视世界，而不是让自己暴露在刺眼的聚光灯下。",
+                "score_-2_-1": "你习惯在人群中保持一种朦胧的透明度。你只向极少数通过测试的人展示真实的纹理，这种克制的表达是你维持内心秩序的一种手段。你享受这种“被看见却不被看透”的状态，这让你感到安全且自由。",
+                "score_0": "你是一个讲究适度展示的人。你会在社交中开启必要的透明度，但也会保留足够的回旋余地。这种中等的能见度让你在人群中显得既真诚又不至于鲁貌，你懂得如何保护隐私，也懂得如何交换真心。",
+                "score_1_2": "你追求一种清爽的真实感，愿意向世界敞开内心的窗户。虽然你仍会保留一丝保护性的余地，但你深信坦诚的沟通是建立深度连接的最短路径。这种晨曦般的特质，让你在社交中往往能够率先赢得他人的信任。",
+                "score_3_4": "你追求一种毫无遮蔽的生命状态，敢于将自己的脆弱与力量一并摊开。你像是一扇全透明的门，这种光感的人格让你在表达自我时拥有无与伦比的勇气。你不在乎他人的审视，因为你本身就活在真实之中。",
+                "score_5_6": "你是一个灵魂深处毫无阴影的人。你敢于在任何环境下展示最原始、最未经修饰的自我，这种极致的透明度让你的灵魂清澈见底。这种强光般的人格极具感染力，同时也意味着你拥有承受一切审视的绝对自信。"
+            },
+            "WIND": {
+                "score_-6_-5": "外界的任何波动都无法干扰你的频率。你极度排斥变动与意外，在恒定且重复的节奏中构建了一套坚不可摧的心理防御体系。对你而言，绝对的安稳并非枷锁，而是让你灵魂能够安然入睡的唯一避风港。",
+                "score_-4_-3": "你极其享受目前生活的惯性，不轻易表达不满，也无意挑战现有的秩序。你在平凡的日常中小心翼翼地构建了微小而稳固的秩序感。对你来说，确定性是生活的首要原则，任何形式的跳脱都可能引发你的焦虑。",
+                "score_-2_-1": "你珍视现有的生活平衡，外界偶尔泛起的波澜会被你迅速抚平。你更看重环境的预测性与安全性，这种平和的姿态让你能专注于内心的修整，而不是把精力浪费在那些前途未卜的冒险或无意义的变革中。",
+                "score_0": "你处于一种静中有动的状态。你接受生活的平淡，但当机会敲门时，你也不排斥小小的尝试。这种中性的风速让你既能守住现有的领地，又能在必要时随风起舞，是一种极具适应力的生存状态。",
+                "score_1_2": "你的内心深处始终涌动着细微的动能，你察觉到了现状中那些令人不快的不完美，并开始尝试进行小范围的改变。这种微风般的心理状态预示着你正在积蓄力量，准备寻找一个更有趣、更契合自我的生活出口。",
+                "score_3_4": "你对现状有着极其清醒的察觉与不满。这种不安分的能量驱动着你不断去挑战、去迁徙、去打破那些束缚你的规则。你宁愿在剧烈的动荡中寻找自我，也不愿在凝滞的空气中日渐枯萎，生命在于不断的迁徙。",
+                "score_5_6": "你对平庸的现状有着极其强烈的破坏欲望与重塑冲动。你宁愿在一次彻底的风暴中破碎，也要换取重新定义生命的可能。在你的哲学里，唯有在最剧烈的变革与冲突中，灵魂的真实色彩才会被彻底激发出来。"
+            },
+            "ION": {
+                "score_-6_-5": "你完全隔绝了外界名利与权力的诱惑。你对物质的野心极低，转而追求精神世界绝对的清静与自由。这种极致的知足让你拥有一种超脱凡尘的平和智慧，你在极简的生活中找到了旁人无法触碰的终极满足。",
+                "score_-4_-3": "你更看重当下的自洽与内心的安稳。过度的野心在你看来是一种沉重的负担，你更愿意在小确幸中寻找精神的支点。你深知欲望的无底洞，因此选择在适合自己的高度停下，享受那种不被他人定义的轻松。",
+                "score_-2_-1": "你目前处于一种欲望的低频期，更在乎精神的平衡而非物质的扩张。这种知足并非消极的妥协，而是一种防御性的自我保护。你通过缩小欲望的边界，来换取生活的主动权，确保自己不被焦虑所吞噬。",
+                "score_0": "你处于知足与进取之间的黄金分割点。你有自己的追求，但不会为此牺牲当下的快乐。你明白什么时候该放手博弈，也明白什么时候该举杯庆祝，这种中庸的电荷让你在社会竞争中显得游刃有余。",
+                "score_1_2": "你的内心深处存在着不安分的潜流，开始渴望掌控更多的资源、话语权或自我实现的契机。这种微弱的野心正在你的潜意识中积蓄能量，准备在某个合适的契机化为向上的推力，带你去往更高的山峰。",
+                "score_3_4": "你有着强烈的胜负欲和掌控全局的冲动，不甘于平庸的现状。你的灵魂深处积蓄着高压电荷，这种不安分的野心驱动着你去征服、去证明。你享受在竞争中胜出的快感，并以此作为衡量自我价值的标尺。",
+                "score_5_6": "你有着极强的扩张欲和近乎绝对的征服感，不允许自己停留在任何平庸的层面上。这种极致的渴望让你时刻准备着在世界留下深刻且耀眼的痕迹。你像是一场蓄势待发的雷暴，注定要改写周围的权力磁场。"
+            }
+        };
+
+        // ==================== 2. 数据读取 ====================
+        // 固定维度显示顺序
+        const dimOrder = ["TEMP", "HUM", "VIS", "WIND", "ION"];
+        // 从网址获取人格编码
+        const params = new URLSearchParams(window.location.search);
+        const code = params.get('code') || "00000";
+        // 从本地存储获取测试分数
+        const scores = JSON.parse(localStorage.getItem('quizScores') || '{"TEMP":0,"HUM":0,"VIS":0,"WIND":0,"ION":0}');
+
+        // ==================== 3. 渲染标题与描述 ====================
+        // 获取对应人格结果
+        const res = weatherResults[code] || { title: "独特气象", quote: "你的气象独一无二。" };
+        // 填入标题
+        document.getElementById('result-title').innerText = `「${res.title}」`;
+        // 填入描述语
+        document.getElementById('result-quote').innerText = res.quote;
+
+        // ==================== 4. 生成特质标签 ====================
+        const tagsContainer = document.getElementById('tags-container');
+        // 循环5个维度
+        dimOrder.forEach((dim, i) => {
+            // 判断当前维度是高分还是低分
+            const isHigh = code[i] === "1";
+            // 获取维度配置
+            const config = dimensionLabels[dim];
+            // 拼接标签HTML
+            tagsContainer.innerHTML += `<span class="px-3 py-1.5 rounded-full bg-[#1a1a24] border border-[#2a2a36] text-[10px] text-[#c0c0c0] tracking-wider">${config.icon} ${isHigh ? config.high : config.low}</span>`;
+        });
+
+        // ==================== 5. 绘制雷达图 ====================
+        function renderRadar() {
+            // 雷达图尺寸、中心点、半径
+            const size = 320, center = size / 2, radius = 85, angleStep = (Math.PI * 2) / 5;
+            // 开始绘制SVG
+            let svg = `<svg width="${size}" height="${size}" class="overflow-visible">`;
+
+            // 绘制雷达网格线（4层）
+            for (let l = 1; l <= 4; l++) {
+                const r = radius * (l / 4);
+                let gridPts = dimOrder.map((_, i) => `${center + r * Math.cos(angleStep * i - Math.PI / 2)},${center + r * Math.sin(angleStep * i - Math.PI / 2)}`).join(" ");
+                svg += `<polygon points="${gridPts}" fill="none" stroke="#222" stroke-width="1"/>`;
+            }
+
+            // 绘制中心到顶点的分割线
+            dimOrder.forEach((_, i) => {
+                svg += `<line x1="${center}" y1="${center}" x2="${center + radius * Math.cos(angleStep * i - Math.PI / 2)}" y2="${center + radius * Math.sin(angleStep * i - Math.PI / 2)}" stroke="#222"/>`;
+            });
+
+            // 计算人格多边形顶点
+            const pts = dimOrder.map((dim, i) => {
+                const r = radius * (((scores[dim] + 6) / 12) * 0.8 + 0.2);
+                return { x: center + r * Math.cos(angleStep * i - Math.PI / 2), y: center + r * Math.sin(angleStep * i - Math.PI / 2) };
+            });
+
+            // 绘制人格多边形
+            svg += `<path d="${pts.map((p, i) => (i === 0 ? 'M' : 'L') + p.x + ',' + p.y).join(' ')}Z" fill="rgba(106, 172, 239, 0.2)" stroke="#6aacef" stroke-width="2"/>`;
+
+            // 绘制维度名称与分数
+            dimOrder.forEach((dim, i) => {
+                const x = center + (radius + 25) * Math.cos(angleStep * i - Math.PI / 2);
+                const y = center + (radius + 25) * Math.sin(angleStep * i - Math.PI / 2);
+                svg += `<text x="${x}" y="${y - 5}" text-anchor="middle" class="radar-label">${dimensionLabels[dim].name}</text><text x="${x}" y="${y + 10}" text-anchor="middle" class="radar-score">${scores[dim] > 0 ? '+' : ''}${scores[dim]}</text>`;
+            });
+
+            // 插入SVG到页面
+            document.getElementById('radar-container').innerHTML = svg + `</svg>`;
+        }
+        // 执行雷达图绘制
+        renderRadar();
+
+        // ==================== 6. 生成气象编码 + 深度解析 ====================
+        const codeBars = document.getElementById('code-bars');
+        const codeLabels = document.getElementById('code-labels');
+        const analysisContainer = document.getElementById('analysis-container');
+
+        // 根据分数匹配解析文案的key
+        function getScoreKey(s) {
+            if (s <= -5) return "score_-6_-5";
+            if (s <= -3) return "score_-4_-3";
+            if (s <= -1) return "score_-2_-1";
+            if (s === 0) return "score_0";
+            if (s <= 2) return "score_1_2";
+            if (s <= 4) return "score_3_4";
+            return "score_5_6";
+        }
+
+        // 循环遍历 5 个维度（温度、湿度、能见度、风速、电离度）
+        dimOrder.forEach(dim => {
+
+            // 1. 获取当前维度的分数（例如：TEMP = 3）
+            const s = scores[dim];
+            // 2. 生成【气象编码】的数字方块（蓝色/灰色块）
+            codeBars.innerHTML += `
+                <div class="w-12 h-10 rounded-lg flex items-center justify-center font-bold text-sm 
+                    ${s >= 0 
+                        ? "bg-[#1a2a3a] text-[#6aacef]"  // 正数 → 蓝色背景
+                        : "bg-[#16161a] text-[#555]"    // 负数 → 灰色背景
+                    }">
+                    ${s > 0 ? '+' + s : s}  <!-- 显示分数，正数前面加+号 -->
+                </div>
+            `;
+            // 3. 生成【气象编码】下方的文字标签（温度、湿度...）
+            codeLabels.innerHTML += `
+                <span class="w-12 text-center text-[10px] text-[#666]">
+                    ${dimensionLabels[dim].name}  <!-- 显示维度名称 -->
+                </span>
+            `;
+            // 4. 获取当前维度对应的【深度解析文案】
+            const text = dimensionComponents[dim][getScoreKey(s)];            
+            // 5. 生成【深度解析卡片】            
+            analysisContainer.innerHTML += `
+                <div class="bg-[#0f0f15] rounded-3xl p-7 border border-[#1e1e26]">
+                    <div class="flex items-center gap-3 mb-4">
+                        <span class="text-xl">${dimensionLabels[dim].icon}</span>  <!-- 图标 -->
+                        <span class="text-xs text-[#e0ddd5] font-bold tracking-widest">
+                            ${dimensionLabels[dim].name}  <!-- 维度名称 -->
+                        </span>
+                        <span class="text-[13px] text-[#6aacef] ml-auto font-mono">
+                            ${s > 0 ? '+' : ''}${s}      <!-- 维度分数 -->
+                        </span>
+                    </div>
+                    <p class="text-[13px] text-[#9ca3af] leading-relaxed tracking-wide">
+                        ${text}  <!-- 深度解析文字 -->
+                    </p>
+                </div>
+            `;
+        });
+    </script>
+</body>
+</html>

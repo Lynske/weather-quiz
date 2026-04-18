@@ -1,0 +1,214 @@
+/* 基础重置 */
+* { margin: 0; padding: 0; box-box: border-box; }
+
+body {
+    font-family: 'Noto Serif SC', serif;
+    background-color: #0a0a0f; /* 极深蓝黑底色 */
+    color: #e0ddd5;
+    font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
+    overflow: hidden;
+}
+
+.main-container {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    padding: 0 24px;
+}
+
+/* 1. 氛围背景动画（复刻那些 Floating circles） */
+.ambient-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+}
+
+.circle {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px); /* 弥散光效果 */
+    opacity: 0.2;
+    animation: breathe 8s infinite ease-in-out;
+}
+
+.circle-1 {
+    width: 300px; height: 300px;
+    background: #1a2a3a;
+    top: 15%; left: 10%;
+}
+
+.circle-2 {
+    width: 400px; height: 400px;
+    background: #2a1a15;
+    bottom: 20%; right: 15%;
+    animation-delay: 2s;
+}
+
+.circle-3 {
+    width: 200px; height: 200px;
+    background: #202a35;
+    top: 50%; left: 60%;
+    animation-delay: 1s;
+}
+
+@keyframes breathe {
+    0%, 100% { transform: scale(1); opacity: 0.15; }
+    50% { transform: scale(1.2); opacity: 0.25; }
+}
+
+/* 2. 文字排版 */
+.content {
+    position: relative;
+    z-index: 10;
+    text-align: center;
+    max-width: 500px;
+}
+
+.subtitle {
+    color: #8a8a8a;
+    font-size: 12px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    margin-bottom: 24px;
+}
+
+.main-title {
+    font-size: 2.5rem;
+    font-weight: bold;
+    line-height: 1.3;
+    margin-bottom: 16px;
+}
+
+.highlight {
+    color: #6aacef; /* 那个漂亮的天蓝色 */
+}
+
+.description {
+    color: #9a9a9a;
+    line-height: 1.8;
+    margin-bottom: 48px;
+    font-size: 1.1rem;
+}
+
+/* 3. 按钮样式 */
+.start-btn {
+    padding: 16px 48px;
+    border-radius: 50px;
+    background-color: #6aacef;
+    color: #0a0a0f;
+    border: none;
+    font-size: 18px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 15px rgba(106, 172, 239, 0.2);
+}
+
+.start-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 12px 40px -10px rgba(106, 172, 239, 0.4);
+}
+
+.footer-info {
+    margin-top: 32px;
+    font-size: 12px;
+    color: #6a6a6a;
+    opacity: 0.7;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* 答题页专属样式 */
+#quiz-container {
+    max-width: 600px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+/* 进度条轨道 */
+.progress-bar {
+    width: 100%;
+    height: 4px;
+    background: #1a1a24;
+    position: fixed;
+    top: 0;
+    left: 0;
+}
+
+/* 进度条填充 */
+#progress-fill {
+    height: 100%;
+    background: rgba(106, 172, 239, 0.6);
+    width: 0%;
+    transition: width 0.4s ease;
+}
+
+/* 题目文字 */
+#question-text {
+    font-size: 1.5rem;
+    color: #e0ddd5;
+    text-align: center;
+    margin-bottom: 40px;
+    line-height: 1.6;
+}
+
+/* 选项按钮 */
+.option-btn {
+    width: 100%;
+    text-align: left;
+    padding: 16px 20px;
+    margin-bottom: 12px;
+    background: #12121a;
+    border: 2px solid #2a2a36;
+    border-radius: 12px;
+    color: #c0c0c0;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+/* 选项鼠标悬停 */
+.option-btn:hover {
+    border-color: #4a4a5a;
+    background: #1a1a24;
+    transform: translateY(-2px);
+}
+
+/* 选项选中状态 */
+.option-btn.selected {
+    background: #1a2a3a;
+    border-color: #6aacef;
+}
+
+
+
+
+
+/* 专门修改测试题目的字体大小 */
+#question-text {
+    /* 引用思源宋体，后面是备选字体 */
+    font-family: 'Noto Serif SC', serif; 
+    font-size: 20px;   /* 你之前想改的字体大小 */
+    line-height: 1.6;
+    color: #e0ddd5;
+}
